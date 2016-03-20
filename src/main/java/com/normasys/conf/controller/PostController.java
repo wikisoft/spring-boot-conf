@@ -66,6 +66,12 @@ public class PostController {
     }
 
     // comments
+    @RequestMapping(value = "/comments", method = RequestMethod.GET)
+    public @ResponseBody List<Comment> getComments() {
+	return postService.getComments();
+    }
+    
+    
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
     public @ResponseBody Comment getComment(@PathVariable("id") final String id) {
 	return postService.getComment(id);
