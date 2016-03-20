@@ -7,11 +7,11 @@ var app = angular
 		    $stateProvider
 		    
 		    // login page
-//		    .state('nav', {
-//			url : '/front/login',
-//			templateUrl : '/views/login.html',
-//			controller : 'Navigation'
-//		    })
+		    .state('nav', {
+			url : '/front/login',
+			templateUrl : '/views/login.html',
+			controller : 'Navigation'
+		    })
 
 		    // posts
 		    .state('home', {
@@ -130,6 +130,11 @@ var app = angular
 				$scope.post = data;
 			    });
 
+		    // $http.get('/comments/'+
+		    // $stateParams.id).success(function(data) {
+		    // $scope.post.comments = data;
+		    // });
+
 		    $scope.saveComment = function() {
 			$http.post('/rest/saveComment/' + $scope.post.id,
 				$scope.comment).success(
@@ -167,13 +172,87 @@ var app = angular
 		'Navigation',
 		function($rootScope, $scope, $http, $location) {
 
-		    $rootScope.isAdmin = true;
+		    $rootScope.userName = '';
+		    $rootScope.isAdmin = false;
+		    // $rootScope.hideAuthorMenu = false;
+
+		    var authenticate = function(credentials, callback) {
+			var headers = credentials ? {
+			    authorization : "Basic "
+				    + btoa(credentials.username + ":"
+					    + credentials.password)
+			} : {};
+			
+			//console.log(headers);
+
+			$http.get('/user', {
+			    headers : headers
+			}).success(function(data) {
+			    // console.log(data);
+			    if (data == '') {
+				$location.path("/front/login");
+				$rootScope.authenticated = false;
+			    } else {
+				$rootScope.userName = data.username;
+				$rootScope.authenticated = true;
+				checkIfIsAdmin(data.authorities);
+			    }
+			    callback && callback($rootScope.authenticated);
+			}).error(function() {
+			    $rootScope.authenticated = false;
+			    callback && callback(false);
+			});
+
+		    }
+
+		    checkIfIsAdmin = function(data) {
+			if (data == null || !$rootScope.authenticated) {
+			    return false;
+			}
+			data.some(function(e, index, array) {
+			    if (e.authority == 'ROLE_ADMIN') {
+				$rootScope.isAdmin = true;
+				return true;
+			    }
+			    return false;
+			});
+		    };
+
+		    authenticate();
+
+		    $scope.credentials = {};
+		    $scope.login = function() {
+			authenticate($scope.credentials,
+				function(authenticated) {
+				    if (authenticated) {
+					console.log("Login succeeded")
+					$location.path("/front/home");
+					$scope.error = false;
+					$rootScope.authenticated = true;
+				    } else {
+					console.log("Login failed")
+					$location.path("/front/login");
+					$scope.error = true;
+					$rootScope.authenticated = false;
+				    }
+				})
+		    };
+
+		    $scope.logout = function() {
+			$http.post('/logout', {}).finally(function() {
+			    $rootScope.authenticated = false;
+			    $location.path("/front/login");
+			});
+		    }
 
 		})
 
 	.controller(
 		'AuthorCtrl',
 		function($rootScope, $scope, $http, Notification) {
+
+		    // //$rootScope.hideAuthorMenu = true;
+		    // console.log(hideAuthorMenu);
 
 		    $scope.author = {};
 

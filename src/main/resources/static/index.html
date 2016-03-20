@@ -60,13 +60,13 @@
 				<nav class="navbar navbar-static-top" role="navigation"
 					style="margin-bottom: 0">
 					<ul class="nav navbar-right navbar-top-links"
-						>
-						<li>Hello</li>
-						<li>
+						ng-show="authenticated">
+						<li>Hello {{userName}}</li>
+						<li ng-show="isAdmin">
 							<a href="#/front/authors">| Manage Authors</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="#" ng-click="logout()">
 								|
 								<i class="fa fa-sign-out"></i>
 								Log out
