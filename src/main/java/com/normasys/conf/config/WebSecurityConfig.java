@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	http.httpBasic();
 	http.authorizeRequests().antMatchers("/static/**").permitAll().antMatchers("/front/**", "/rest/**")
-		.authenticated().and().formLogin().loginPage("/#/front/login").permitAll().and().csrf()
+		.authenticated().and().csrf()
 		.csrfTokenRepository(csrfTokenRepository()).and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
     }
 
