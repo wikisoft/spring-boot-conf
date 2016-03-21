@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +60,7 @@ public class PostController {
 	return postService.getPosts();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/deletePost", method = RequestMethod.POST)
     public @ResponseBody List<Post> deletePost(@RequestBody final Post post) {
 	postService.deletePost(post);
@@ -98,6 +100,7 @@ public class PostController {
 	return postService.getComments();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/upvoteComment/{isUp}/{postId}", method = RequestMethod.POST)
     public @ResponseBody Post upvoteComment(@RequestBody final Comment comment,
 	    @PathVariable("isUp") final boolean isUP,
