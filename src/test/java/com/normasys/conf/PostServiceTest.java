@@ -22,9 +22,9 @@ public class PostServiceTest {
     @Test
     public void TestConvertDate() {
 	Date currentDate = new Date();
-	SimpleDateFormat dateFormat = new SimpleDateFormat("dd*MM-YYYY");
-	String dateConvertor = postService.convertDate(currentDate);
-	Assert.assertEquals(dateConvertor, dateFormat.format(currentDate));
+	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+	String dateConverter = postService.convertDate(currentDate);
+	Assert.assertEquals(dateConverter, dateFormat.format(currentDate));
     }
 
 }

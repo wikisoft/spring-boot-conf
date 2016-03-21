@@ -97,10 +97,4 @@ public class PostService {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
 	return dateFormat.format(date);
     }
-
-    public String newValue() {
-
-	return "value";
-    }
-
 }
