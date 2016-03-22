@@ -1,13 +1,9 @@
 package com.normasys.conf.service;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -28,19 +24,10 @@ public class CheckBannerFile implements HealthIndicator {
 
     private boolean checkFile() {
 
-	try {
-	    Resource resource = resourceLoader
-		    .getResource("classpath:banner.txt");
-	    File banner = resource.getFile();
-
-	    if (banner.exists()) {
-		return true;
-	    }
-	    return false;
-	} catch (IOException e) {
-	    return false;
+	if (resourceLoader.getResource("classpath:banner.txt").exists()) {
+	    return true;
 	}
-
+	return false;
     }
 
 }
