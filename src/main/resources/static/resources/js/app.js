@@ -6,13 +6,6 @@ var app = angular
 
 		    $stateProvider
 		    
-		    // login page
-//		    .state('nav', {
-//			url : '/front/login',
-//			templateUrl : '/views/login.html',
-//			controller : 'Navigation'
-//		    })
-
 		    // posts
 		    .state('home', {
 			url : '/front/home',
