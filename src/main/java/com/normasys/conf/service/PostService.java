@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.normasys.conf.dao.AuthorRepository;
 import com.normasys.conf.dao.CommentRepository;
+import com.normasys.conf.dao.PersonRepository;
 import com.normasys.conf.dao.PostRepository;
 import com.normasys.conf.model.Author;
 import com.normasys.conf.model.Comment;
+import com.normasys.conf.model.Person;
 import com.normasys.conf.model.Post;
 
 @Service
@@ -26,6 +28,9 @@ public class PostService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Value("custom.myValue")
     private String customValue;
@@ -93,14 +98,30 @@ public class PostService {
 	authorRepository.delete(author);
     }
 
+    // Persons
+    public List<Person> getPersons() {
+	return personRepository.findAll();
+    }
+
+    public Person getPerson(final String id) {
+	return personRepository.findOne(id);
+    }
+
+    public void save(final Person person) {
+	personRepository.save(person);
+    }
+
+    public void deleteAllPersons() {
+	personRepository.deleteAll();
+    }
+    
+    public void deletePerson(final Person person) {
+	personRepository.delete(person);
+    }
+
     public String convertDate(Date date) {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
 	return dateFormat.format(date);
-    }
-
-    public String newValue() {
-
-	return "value";
     }
 
 }
