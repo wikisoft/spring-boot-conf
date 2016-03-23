@@ -55,7 +55,7 @@
 						<label for="author" class=" control-label">Author</label>
 					</div>
 					<div class="col-sm-3">
-						<select class="form-control" ng-model="post.author" ng-options="data.name for data in authors track by data.id">
+						<select class="form-control" ng-model="post.author" ng-options="data.name for data in authors | orderBy:'name' track by data.id ">
 						</select>
 					</div>
 
