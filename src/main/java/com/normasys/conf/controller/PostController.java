@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.normasys.conf.model.Author;
 import com.normasys.conf.model.Comment;
+import com.normasys.conf.model.Person;
 import com.normasys.conf.model.Post;
 import com.normasys.conf.service.PostService;
 
@@ -137,6 +138,31 @@ public class PostController {
 	    @RequestBody final Author author) {
 	postService.deleteAuthor(author);
 	return postService.getAuthors();
+    }
+    
+    // Persons
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
+    public @ResponseBody Person getPerson(@PathVariable("id") final String id) {
+	return postService.getPerson(id);
+    }
+
+    @RequestMapping(value = "/persons", method = RequestMethod.GET)
+    public @ResponseBody List<Person> getPersonList() {
+	return postService.getPersons();
+    }
+
+    @RequestMapping(value = "/savePerson", method = RequestMethod.POST)
+    public @ResponseBody List<Person> savePerson(
+	    @RequestBody final Person person) {
+	postService.save(person);
+	return postService.getPersons();
+    }
+
+    @RequestMapping(value = "/deletePerson", method = RequestMethod.POST)
+    public @ResponseBody List<Person> deletePerson(
+	    @RequestBody final Person person) {
+	postService.deletePerson(person);
+	return postService.getPersons();
     }
 
 }
