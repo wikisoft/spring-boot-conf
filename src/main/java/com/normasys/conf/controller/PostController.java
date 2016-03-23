@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.normasys.conf.model.Author;
 import com.normasys.conf.model.Comment;
+import com.normasys.conf.model.Person;
 import com.normasys.conf.model.Post;
 import com.normasys.conf.service.PostService;
 
@@ -45,8 +46,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "/upvotePost/{up}", method = RequestMethod.POST)
-    public @ResponseBody List<Post> upvotePost(@RequestBody final Post post,
-	    @PathVariable("up") final boolean isUP) {
+    public @ResponseBody List<Post> upvotePost(@RequestBody final Post post, @PathVariable("up") final boolean isUP) {
 	if (isUP) {
 	    post.setUpvotes(post.getUpvotes() + 1);
 	} else {
@@ -72,8 +72,7 @@ public class PostController {
     public @ResponseBody List<Comment> getComments() {
 	return postService.getComments();
     }
-    
-    
+
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
     public @ResponseBody Comment getComment(@PathVariable("id") final String id) {
 	return postService.getComment(id);
@@ -94,8 +93,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "/deleteComment", method = RequestMethod.POST)
-    public @ResponseBody List<Comment> deleteComment(
-	    @RequestBody final Comment comment) {
+    public @ResponseBody List<Comment> deleteComment(@RequestBody final Comment comment) {
 	postService.deleteComment(comment);
 	return postService.getComments();
     }
@@ -103,8 +101,7 @@ public class PostController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/upvoteComment/{isUp}/{postId}", method = RequestMethod.POST)
     public @ResponseBody Post upvoteComment(@RequestBody final Comment comment,
-	    @PathVariable("isUp") final boolean isUP,
-	    @PathVariable("postId") final String postId) {
+	    @PathVariable("isUp") final boolean isUP, @PathVariable("postId") final String postId) {
 	if (isUP) {
 	    comment.setUpvotes(comment.getUpvotes() + 1);
 	} else {
@@ -126,17 +123,38 @@ public class PostController {
     }
 
     @RequestMapping(value = "/saveAuthor", method = RequestMethod.POST)
-    public @ResponseBody List<Author> saveAuthor(
-	    @RequestBody final Author author) {
+    public @ResponseBody List<Author> saveAuthor(@RequestBody final Author author) {
 	postService.save(author);
 	return postService.getAuthors();
     }
 
     @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST)
-    public @ResponseBody List<Author> deleteAuthor(
-	    @RequestBody final Author author) {
+    public @ResponseBody List<Author> deleteAuthor(@RequestBody final Author author) {
 	postService.deleteAuthor(author);
 	return postService.getAuthors();
+    }
+
+    // Persons
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
+    public @ResponseBody Person getPerson(@PathVariable("id") final String id) {
+	return postService.getPerson(id);
+    }
+
+    @RequestMapping(value = "/persons", method = RequestMethod.GET)
+    public @ResponseBody List<Person> getPersonList() {
+	return postService.getPersons();
+    }
+
+    @RequestMapping(value = "/savePerson", method = RequestMethod.POST)
+    public @ResponseBody List<Person> savePerson(@RequestBody final Person person) {
+	postService.save(person);
+	return postService.getPersons();
+    }
+
+    @RequestMapping(value = "/deletePerson", method = RequestMethod.POST)
+    public @ResponseBody List<Person> deletePerson(@RequestBody final Person person) {
+	postService.deletePerson(person);
+	return postService.getPersons();
     }
 
 }
